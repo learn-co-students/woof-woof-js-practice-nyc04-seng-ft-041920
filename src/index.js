@@ -1,11 +1,12 @@
+let allDogs = ""
 document.addEventListener("DOMContentLoaded", function() {
     fetch("http://localhost:3000/pups")
     .then(function(res) {
         return res.json();
     })
     .then(function(json) {
-        console.log(json)
         renderDogBar(json)
+        allDogs = json
     })
 })
 
@@ -29,7 +30,6 @@ function renderDog(dogObject) {
         <button>${dogObject.isGoodDog}</button>`
     const dogButton = dogInfo.querySelector("button")
     dogButton.addEventListener("click", function(e) {
-        console.log(e.target, dogObject)
         toggleLike(e.target, dogObject)
     })
 }
@@ -62,4 +62,42 @@ function toggleLike(dogButton, dogObject) {
     .then(function(obj) {
         console.log(obj)
     })
+}
+
+
+//redo filter, it requires a reload, want it to update immediately
+
+const dogFilterButton = document.querySelector("#good-dog-filter")
+dogFilterButton.addEventListener("click", function(e) {
+    console.log(e.target, allDogs)
+    toggleFilterText(e.target)
+    filterGood(allDogs, e.target)
+})
+
+function filterGood(allDogs, button){
+    //clear dogs
+    const dogBar = document.querySelector("#dog-bar");
+    dogBar.innerHTML = " ";
+    //filter
+    if (button.innerText === "Filter good dogs: ON") {
+        let newDogArr = []
+        allDogs.forEach(function(dogObj) {
+            if (dogObj.isGoodDog === true) {
+                newDogArr.push(dogObj)
+            }
+        })
+        renderDogBar(newDogArr)
+    }
+    else {
+        renderDogBar(allDogs)
+    }
+}
+
+function toggleFilterText(filterButton) {
+    if (filterButton.textContent === "Filter good dogs: OFF") {
+        filterButton.textContent = "Filter good dogs: ON"
+    }
+    else {
+        filterButton.textContent = "Filter good dogs: OFF"
+    }
 }
