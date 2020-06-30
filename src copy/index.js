@@ -1,8 +1,7 @@
-let allDogs = []
+
 const filterBtn = document.querySelector('#good-dog-filter')
 
 // toggle between Filter : "Filter good dogs: ON/OFF"
-/*
 filterBtn.addEventListener('click', e => {
   if(e.target.innerText === "Filter good dogs: ON") {
      e.target.innerText = "Filter good dogs: OFF" 
@@ -16,7 +15,6 @@ filterBtn.addEventListener('click', e => {
    }
 
 })
-*/
 
 // initial render
 getDogs().then(renderDogs)
@@ -31,23 +29,21 @@ function getDogs(){
 
 
 function renderDogs(dogs){
-  allDogs = [...dogs]
   const dogBar = document.querySelector('#dog-bar')
   dogBar.innerHTML = ""
 
+  console.log(dogs)
   dogs.forEach(dog => {
     const dogSpan = document.createElement('span')
     dogSpan.innerText = dog.name
-    dogSpan.dataset.id = dog.id
-    // dogSpan.setAttribute('data-id', dog.id)
-    dogBar.append(dogSpan)
-    
+    dogSpan.setAttribute('data-id', dog.id)
     dogSpan.addEventListener('click', e=>{
       // debugger
       console.log(e.target.dataset.id)
       getDogInfo(e.target.dataset.id)
     })
-    
+    dogBar.append(dogSpan)
+    debugger
   });
 }
 
